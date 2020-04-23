@@ -1,0 +1,52 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+// Variables
+$color: #ffecc7;
+$background-color: #f5b971;
+
+// Mixins
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    height: 100vh;
+    width: 100vw;
+    background-color: $background-color;
+    color: $color;
+    @include flex-center();
+}
+
+.start {
+    @include flex-center();
+    flex-direction: column;
+}
+
+.header {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+    font-size: 9rem;
+}
+
+.start-button {
+    background-color: $color;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.start-button:hover, .start-button:focus {
+    filter: brightness(95%);
+}
+
+.hidden {
+    display: none;
+}
