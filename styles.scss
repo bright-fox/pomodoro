@@ -6,7 +6,7 @@
 
 // Variables
 $color: #ffecc7;
-$background-color: #f5b971;
+$background-color: #85a392; //f5b971 ?
 
 // Mixins
 @mixin flex-center {
@@ -23,15 +23,29 @@ $background-color: #f5b971;
     @include flex-center();
 }
 
-.start {
-    @include flex-center();
-    flex-direction: column;
-}
-
 .header {
     font-family: 'Montserrat', sans-serif;
     font-weight: 100;
     font-size: 9rem;
+    text-align: center;
+}
+
+.start, .break {
+    @include flex-center();
+    flex-direction: column;
+}
+
+.break-header {
+    font-size: 5rem;
+}
+
+.break-clock {
+    font-size: 8rem;
+}
+
+.counter-clock, .break-clock {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
 }
 
 .start-button {

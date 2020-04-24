@@ -8,7 +8,7 @@
 .content {
   height: 100vh;
   width: 100vw;
-  background-color: #f5b971;
+  background-color: #85a392;
   color: #ffecc7;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -21,7 +21,14 @@
           align-items: center;
 }
 
-.start {
+.header {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+  font-size: 9rem;
+  text-align: center;
+}
+
+.start, .break {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -37,10 +44,17 @@
           flex-direction: column;
 }
 
-.header {
-  font-family: 'Montserrat', sans-serif;
+.break-header {
+  font-size: 5rem;
+}
+
+.break-clock {
+  font-size: 8rem;
+}
+
+.counter-clock, .break-clock {
+  font-family: 'Roboto', sans-serif;
   font-weight: 100;
-  font-size: 9rem;
 }
 
 .start-button {
