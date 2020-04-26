@@ -30,54 +30,60 @@ function MainFunctions() {
     let isPause = false;
     let isStudy = false;
 
-    const addStartButtonListener = _ => {
-        startButton.addEventListener("click", _ => {
-            // display play and skip button
-            playButton.classList.remove("hidden");
-            skipButton.classList.remove("hidden");
-            resetButton.classList.remove("hidden");
-            initStudy();
-        });
+    // ====== CLICK HANDLERS =======
+
+    const handleStart = _ => {
+        // display play and skip button
+        playButton.classList.remove("hidden");
+        skipButton.classList.remove("hidden");
+        resetButton.classList.remove("hidden");
+        initStudy();
+        document.removeEventListener("keyup", handleEnterKeyListener);
+        document.addEventListener("keyup", handleSpaceKeyListener);
     }
 
-    const addMuteButtonListener = _ => {
-        muteButton.addEventListener("click", _ => {
-            isMuted = !isMuted;
-            if (isMuted) gongSound.pause();
-            muteButton.innerHTML = isMuted ? "<i class='fas fa-volume-mute'></i>" : "<i class='fas fa-volume-up'></i>";
-            muteButton.setAttribute("title", isMuted ? "Unmute" : "Mute");
-        })
+    const handleMute = _ => {
+        isMuted = !isMuted;
+        if (isMuted) gongSound.pause();
+        muteButton.innerHTML = isMuted ? "<i class='fas fa-volume-mute'></i>" : "<i class='fas fa-volume-up'></i>";
+        muteButton.setAttribute("title", isMuted ? "Unmute" : "Mute");
     }
 
-    const addPlayButtonListener = _ => {
-        playButton.addEventListener("click", _ => {
-            isPause = !isPause;
-            if (isPause) {
-                playButton.innerHTML = "<i class='fas fa-pause'></i>";
-                playButton.setAttribute("title", "Play");
-                clearInterval(isStudy ? studyTimer : breakTimer);
+    const handlePause = _ => {
+        isPause = !isPause;
+        if (isPause) {
+            playButton.innerHTML = "<i class='fas fa-pause'></i>";
+            playButton.setAttribute("title", "Play");
+            clearInterval(isStudy ? studyTimer : breakTimer);
+        } else {
+            playButton.innerHTML = "<i class='fas fa-play'></i>";
+            playButton.setAttribute("title", "Pause");
+            if (isStudy) {
+                studyTimer = setInterval(function () { updateTimer(studyClock) }, 1000);
             } else {
-                playButton.innerHTML = "<i class='fas fa-play'></i>";
-                playButton.setAttribute("title", "Pause");
-                if (isStudy) {
-                    studyTimer = setInterval(function () { updateTimer(studyClock) }, 1000);
-                } else {
-                    breakTimer = setInterval(function () { updateTimer(breakClock) }, 1000);
-                }
+                breakTimer = setInterval(function () { updateTimer(breakClock) }, 1000);
             }
-        })
+        }
     }
 
-    const addSkipButtonListener = _ => {
-        skipButton.addEventListener("click", _ => {
-            isStudy ? initBreak() : initStudy();
-        });
+    const handleSkip = _ => {
+        isStudy ? initBreak() : initStudy();
     }
 
-    const addResetButtonListener = _ => {
-        resetButton.addEventListener("click", _ => {
-            isStudy ? initStudy() : initBreak();
-        });
+    const handleReset = _ => {
+        isStudy ? initStudy() : initBreak();
+    }
+
+    // ====== KEYBOARD LISTENERS =======
+
+    const handleEnterKeyListener = e => {
+        if (e.keyCode !== 13) return;
+        handleStart();
+    }
+
+    const handleSpaceKeyListener = e => {
+        if (e.keyCode !== 32) return;
+        handlePause();
     }
 
     const updateTimer = (clock) => {
@@ -126,11 +132,6 @@ function MainFunctions() {
         gongSound.play();
     }
 
-    const initGongSound = _ => {
-        gongSound = new Audio("./sounds/gong.mp3");
-        gongSound.volume = 0.3;
-    }
-
     const reset = (setIsStudy) => {
         clearInterval(isStudy ? studyTimer : breakTimer);
         isPause = false;
@@ -139,12 +140,22 @@ function MainFunctions() {
         isStudy = setIsStudy;
     }
 
+
+    const initGongSound = _ => {
+        gongSound = new Audio("./sounds/gong.mp3");
+        gongSound.volume = 0.3;
+    }
+
     const initClickListeners = _ => {
-        addStartButtonListener();
-        addMuteButtonListener();
-        addPlayButtonListener();
-        addSkipButtonListener();
-        addResetButtonListener();
+        startButton.addEventListener("click", handleStart);
+        muteButton.addEventListener("click", handleMute);
+        playButton.addEventListener("click", handlePause);
+        skipButton.addEventListener("click", handleSkip);
+        resetButton.addEventListener("click", handleReset);
+    }
+
+    const initKeyboardListeners = _ => {
+        document.addEventListener("keyup", handleEnterKeyListener);
     }
 
     const cacheDOMElements = _ => {
@@ -163,6 +174,7 @@ function MainFunctions() {
     const init = _ => {
         cacheDOMElements();
         initGongSound();
+        initKeyboardListeners();
         initClickListeners();
     }
 
