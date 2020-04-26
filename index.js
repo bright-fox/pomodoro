@@ -14,6 +14,7 @@ function MainFunctions() {
     let playButton;
     let startButton;
     let muteButton;
+    let resetButton;
 
     // sounds variables
     let gongSound;
@@ -34,6 +35,7 @@ function MainFunctions() {
             // display play and skip button
             playButton.classList.remove("hidden");
             skipButton.classList.remove("hidden");
+            resetButton.classList.remove("hidden");
             initStudy();
         });
     }
@@ -69,6 +71,12 @@ function MainFunctions() {
     const addSkipButtonListener = _ => {
         skipButton.addEventListener("click", _ => {
             isStudy ? initBreak() : initStudy();
+        });
+    }
+
+    const addResetButtonListener = _ => {
+        resetButton.addEventListener("click", _ => {
+            isStudy ? initStudy() : initBreak();
         });
     }
 
@@ -136,6 +144,7 @@ function MainFunctions() {
         addMuteButtonListener();
         addPlayButtonListener();
         addSkipButtonListener();
+        addResetButtonListener();
     }
 
     const cacheDOMElements = _ => {
@@ -148,6 +157,7 @@ function MainFunctions() {
         playButton = document.querySelector("#play");
         startButton = document.querySelector(".start-button");
         muteButton = document.querySelector("#mute");
+        resetButton = document.querySelector("#reset");
     }
 
     const init = _ => {
