@@ -58,17 +58,38 @@
 }
 
 .start-button {
-  background-color: #ffecc7;
-  border: none;
   padding: 1rem;
   border-radius: 5px;
+}
+
+.button-bar {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  padding: 10px 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.icon-button {
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.button {
+  background-color: #ffecc7;
+  border: none;
   outline: none;
   cursor: pointer;
 }
 
-.start-button:hover, .start-button:focus {
-  -webkit-filter: brightness(95%);
-          filter: brightness(95%);
+.button:hover {
+  -webkit-filter: brightness(90%);
+          filter: brightness(90%);
 }
 
 .hidden {

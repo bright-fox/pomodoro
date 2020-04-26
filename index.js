@@ -11,6 +11,11 @@
 })()
 
 function MainFunctions(startScreen, counterScreen, counterClock, breakScreen, breakClock) {
+    // sounds variables
+    let gongSound;
+    let isMuted = false;
+
+    // timer variables
     let studyTimer;
     let breakTimer;
     const studyTime = "25:00";
@@ -20,6 +25,15 @@ function MainFunctions(startScreen, counterScreen, counterClock, breakScreen, br
     const addStartButtonListener = _ => {
         const startButton = document.querySelector(".start-button");
         startButton.addEventListener("click", _ => initStudy());
+    }
+
+    const addMuteButtonListener = _ => {
+        const muteButton = document.querySelector("#mute");
+        muteButton.addEventListener("click", _ => {
+            isMuted = !isMuted;
+            muteButton.innerHTML = isMuted ? "<i class='fas fa-volume-mute'></i>" : "<i class='fas fa-volume-up'></i>";
+            muteButton.setAttribute("title", isMuted ? "Unmute" : "Mute");
+        })
     }
 
     const updateTimer = (clock, isStudy) => {
@@ -45,6 +59,7 @@ function MainFunctions(startScreen, counterScreen, counterClock, breakScreen, br
     }
 
     const initBreak = _ => {
+        playGong();
         breakClock.textContent = breakTime;
         counterScreen.classList.add("hidden");
         breakScreen.classList.remove("hidden");
@@ -52,6 +67,7 @@ function MainFunctions(startScreen, counterScreen, counterClock, breakScreen, br
     }
 
     const initStudy = _ => {
+        playGong();
         counterClock.textContent = studyTime;
         startScreen.classList.add("hidden");
         breakScreen.classList.add("hidden");
@@ -62,10 +78,21 @@ function MainFunctions(startScreen, counterScreen, counterClock, breakScreen, br
 
     const padNum = num => ("0" + num).substr(-2);
 
+    const playGong = _ => {
+        if (isMuted) return;
+        gongSound.play();
+    }
+
+    const initGong = _ => {
+        gongSound = new Audio("./sounds/gong.mp3");
+        gongSound.volume = 0.3;
+    }
+
     const init = _ => {
+        // init gong sound
+        initGong();
         addStartButtonListener();
-
-
+        addMuteButtonListener();
     }
 
     return { init };

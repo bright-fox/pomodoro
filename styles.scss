@@ -49,16 +49,35 @@ $background-color: #85a392; //f5b971 ?
 }
 
 .start-button {
-    background-color: $color;
-    border: none;
     padding: 1rem;
     border-radius: 5px;
+}
+
+// Button bar
+
+.button-bar {
+    position:fixed;
+    width: 100vw;
+    top: 0;
+    padding: 10px 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.icon-button {
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.button {
+    background-color: $color;
+    border: none;
     outline: none;
     cursor: pointer;
 }
 
-.start-button:hover, .start-button:focus {
-    filter: brightness(95%);
+.button:hover {
+    filter: brightness(90%);
 }
 
 .hidden {
