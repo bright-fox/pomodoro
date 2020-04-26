@@ -1,16 +1,20 @@
 (() => {
-    // cache DOM elements
-    const startScreen = document.querySelector(".start");
-    const counterScreen = document.querySelector(".counter");
-    const studyClock = document.querySelector(".counter-clock");
-    const breakScreen = document.querySelector(".break");
-    const breakClock = document.querySelector(".break-clock");
-
-    const mainFunctions = MainFunctions(startScreen, counterScreen, studyClock, breakScreen, breakClock);
+    const mainFunctions = MainFunctions();
     mainFunctions.init();
 })()
 
-function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, breakClock) {
+function MainFunctions() {
+    // DOM elements
+    let startScreen;
+    let counterScreen;
+    let studyClock;
+    let breakScreen;
+    let breakClock;
+    let skipButton;
+    let playButton;
+    let startButton;
+    let muteButton;
+
     // sounds variables
     let gongSound;
     let isMuted = false;
@@ -26,11 +30,8 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
     let isStudy = false;
 
     const addStartButtonListener = _ => {
-        const startButton = document.querySelector(".start-button");
         startButton.addEventListener("click", _ => {
             // display play and skip button
-            const playButton = document.querySelector("#play");
-            const skipButton = document.querySelector("#skip");
             playButton.classList.remove("hidden");
             skipButton.classList.remove("hidden");
             initStudy();
@@ -38,7 +39,6 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
     }
 
     const addMuteButtonListener = _ => {
-        const muteButton = document.querySelector("#mute");
         muteButton.addEventListener("click", _ => {
             isMuted = !isMuted;
             if (isMuted) gongSound.pause();
@@ -48,7 +48,6 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
     }
 
     const addPlayButtonListener = _ => {
-        const playButton = document.querySelector("#play");
         playButton.addEventListener("click", _ => {
             isPause = !isPause;
             if (isPause) {
@@ -68,14 +67,7 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
     }
 
     const addSkipButtonListener = _ => {
-        const skipButton = document.querySelector("#skip");
-        const playButton = document.querySelector("#play");
-
         skipButton.addEventListener("click", _ => {
-            // clear timer and reset play button
-            clearInterval(isStudy ? studyTimer : breakTimer);
-            isPause = false;
-            playButton.innerHTML = "<i class='fas fa-play'></i>";
             isStudy ? initBreak() : initStudy();
         });
     }
@@ -103,8 +95,7 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
     }
 
     const initBreak = _ => {
-        isStudy = false;
-        playGong();
+        reset(false);
         breakClock.textContent = breakTime;
         counterScreen.classList.add("hidden");
         breakScreen.classList.remove("hidden");
@@ -112,8 +103,7 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
     }
 
     const initStudy = _ => {
-        isStudy = true;
-        playGong();
+        reset(true);
         studyClock.textContent = studyTime;
         startScreen.classList.add("hidden");
         breakScreen.classList.add("hidden");
@@ -128,9 +118,17 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
         gongSound.play();
     }
 
-    const initGong = _ => {
+    const initGongSound = _ => {
         gongSound = new Audio("./sounds/gong.mp3");
         gongSound.volume = 0.3;
+    }
+
+    const reset = (setIsStudy) => {
+        clearInterval(isStudy ? studyTimer : breakTimer);
+        isPause = false;
+        playButton.innerHTML = "<i class='fas fa-play'></i>";
+        playGong();
+        isStudy = setIsStudy;
     }
 
     const initClickListeners = _ => {
@@ -140,9 +138,21 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
         addSkipButtonListener();
     }
 
+    const cacheDOMElements = _ => {
+        startScreen = document.querySelector(".start");
+        counterScreen = document.querySelector(".counter");
+        studyClock = document.querySelector(".counter-clock");
+        breakScreen = document.querySelector(".break");
+        breakClock = document.querySelector(".break-clock");
+        skipButton = document.querySelector("#skip");
+        playButton = document.querySelector("#play");
+        startButton = document.querySelector(".start-button");
+        muteButton = document.querySelector("#mute");
+    }
+
     const init = _ => {
-        // init gong sound
-        initGong();
+        cacheDOMElements();
+        initGongSound();
         initClickListeners();
     }
 
