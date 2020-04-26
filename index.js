@@ -41,6 +41,7 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
         const muteButton = document.querySelector("#mute");
         muteButton.addEventListener("click", _ => {
             isMuted = !isMuted;
+            if (isMuted) gongSound.pause();
             muteButton.innerHTML = isMuted ? "<i class='fas fa-volume-mute'></i>" : "<i class='fas fa-volume-up'></i>";
             muteButton.setAttribute("title", isMuted ? "Unmute" : "Mute");
         })
@@ -68,9 +69,13 @@ function MainFunctions(startScreen, counterScreen, studyClock, breakScreen, brea
 
     const addSkipButtonListener = _ => {
         const skipButton = document.querySelector("#skip");
+        const playButton = document.querySelector("#play");
 
         skipButton.addEventListener("click", _ => {
+            // clear timer and reset play button
             clearInterval(isStudy ? studyTimer : breakTimer);
+            isPause = false;
+            playButton.innerHTML = "<i class='fas fa-play'></i>";
             isStudy ? initBreak() : initStudy();
         });
     }
