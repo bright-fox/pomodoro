@@ -39,7 +39,7 @@ function MainFunctions() {
         resetButton.classList.remove("hidden");
         initStudy();
         document.removeEventListener("keyup", handleEnterKeyListener);
-        document.addEventListener("keyup", handleSpaceKeyListener);
+        document.addEventListener("keyup", handleTimerKeyListeners);
     }
 
     const handleMute = _ => {
@@ -81,9 +81,23 @@ function MainFunctions() {
         handleStart();
     }
 
-    const handleSpaceKeyListener = e => {
-        if (e.keyCode !== 32) return;
-        handlePause();
+    const handleMuteKeyListener = e => {
+        if (e.keyCode !== 220) return;
+        handleMute();
+    }
+
+    const handleTimerKeyListeners = e => {
+        switch (e.keyCode) {
+            case 32:
+                handlePause()
+                break;
+            case 39:
+                handleSkip();
+                break;
+            case 8:
+                handleReset();
+                break;
+        }
     }
 
     const updateTimer = (clock) => {
@@ -156,6 +170,7 @@ function MainFunctions() {
 
     const initKeyboardListeners = _ => {
         document.addEventListener("keyup", handleEnterKeyListener);
+        document.addEventListener("keyup", handleMuteKeyListener);
     }
 
     const cacheDOMElements = _ => {
